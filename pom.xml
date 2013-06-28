@@ -22,7 +22,7 @@
 	</prerequisites>
 
 	<properties>
-		<engine.version>6.1.0-SNAPSHOT</engine.version>
+		<engine.version>6.0.1</engine.version>
 		<!-- Properties to enable jacoco code coverage analysis -->
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
