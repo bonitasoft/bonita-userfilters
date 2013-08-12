@@ -70,13 +70,13 @@ public class SameTaskUserFilterTest extends APITestUtil {
 
         final ProcessInstance processInstance = getProcessAPI().startProcess(processDefinitionId);
 
-        final HumanTaskInstance task1 = (HumanTaskInstance) waitForTaskInState(task1Name, processInstance, TestStates.getReadyState(null));
+        final HumanTaskInstance task1 = (HumanTaskInstance) waitForTaskInState(task1Name, processInstance, TestStates.getReadyState());
         final long userId = aDev.getId();
         assignAndExecuteStep(task1, userId);
 
-        final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(task2Name, processInstance, TestStates.getReadyState(null));
+        final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(task2Name, processInstance, TestStates.getReadyState());
         assertEquals(aDev.getId(), task2.getAssigneeId());
-        assertEquals(TestStates.getReadyState(null), task2.getState());
+        assertEquals(TestStates.getReadyState(), task2.getState());
         logout();
 
         login();
