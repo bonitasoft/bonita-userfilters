@@ -90,12 +90,6 @@
 			<version>1.1</version>
 			<scope>test</scope>
 		</dependency>
-		<dependency>
-			<groupId>org.bonitasoft.engine</groupId>
-			<artifactId>bonita-synchro-server</artifactId>
-			<version>${engine.version}</version>
-			<scope>test</scope>
-		</dependency>
 
 	</dependencies>
 
