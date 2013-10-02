@@ -85,7 +85,7 @@ public class UserManagerFilterTest extends APITestUtil {
         logout();
         loginWith(chiefName, "bpm");
 
-        final WaitForStep task = waitForStep(30, 2000, activityName, processInstance, TestStates.getReadyState());
+        final WaitForStep task = waitForStep(activityName, processInstance, TestStates.getReadyState());
         Assert.assertEquals(chief.getId(), ((HumanTaskInstance) task.getResult()).getAssigneeId());
 
         disableAndDeleteProcess(definition);
