@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>bonita-userfilter-single-user</artifactId>
 		<groupId>org.bonitasoft.userfilter</groupId>
-		<version>6.1.1-rc-01</version>
+		<version>6.1.1-SNAPSHOT</version>
 	</parent>
 
 	<artifactId>bonita-userfilter-single-user-def</artifactId>
