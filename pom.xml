@@ -26,6 +26,7 @@
 		<engine.version>6.3.0-SNAPSHOT</engine.version>
 		
 		<!-- Properties to enable jacoco code coverage analysis -->
+		<sonar.branch>MasterBugFixing</sonar.branch>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
 		<sonar.jacoco.reportPath>${project.build.directory}/reports/jacoco</sonar.jacoco.reportPath>
