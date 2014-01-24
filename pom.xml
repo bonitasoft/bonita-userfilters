@@ -35,8 +35,8 @@
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<!-- The destination file for the code coverage report has to be set to the same value in the parent pom and in each module pom. 
 		Then JaCoCo will add up information in the same report, so that, it will give the cross-module code coverage. -->
-		<sonar.jacoco.itReportPath>${project.build.directory}/reports/jacoco/report-it.exec</sonar.jacoco.itReportPath>
-		<sonar.jacoco.reportPath>${project.build.directory}/reports/jacoco/report.exec</sonar.jacoco.reportPath>
+		<sonar.jacoco.itReportPath>${user.home}/reports/jacoco/report-it.exec</sonar.jacoco.itReportPath>
+		<sonar.jacoco.reportPath>${user.home}/reports/jacoco/report.exec</sonar.jacoco.reportPath>
 		<sonar.junit.reportsPath>${project.build.directory}/surefire-reports</sonar.junit.reportsPath>
 	</properties>
 
