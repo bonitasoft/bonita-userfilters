@@ -25,15 +25,19 @@
 
 	<properties>
 		<engine.version>6.3.0-SNAPSHOT</engine.version>
-		
-		<!-- Properties to enable jacoco code coverage analysis -->
-		<sonar.branch>MasterBugFixing</sonar.branch>
-		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
-		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-		<sonar.jacoco.reportPath>${project.build.directory}/reports/jacoco/report.exec</sonar.jacoco.reportPath>
-		<sonar.junit.reportsPath>${project.build.directory}/surefire-reports</sonar.junit.reportsPath>
+
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+
+		<!-- Properties to enable jacoco code coverage analysis -->
+		<sonar.branch>MasterBugFixing</sonar.branch>
+		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
+		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
+		<!-- The destination file for the code coverage report has to be set to the same value in the parent pom and in each module pom. 
+		Then JaCoCo will add up information in the same report, so that, it will give the cross-module code coverage. -->
+		<sonar.jacoco.itReportPath>${project.build.directory}/reports/jacoco/report-it.exec</sonar.jacoco.itReportPath>
+		<sonar.jacoco.reportPath>${project.build.directory}/reports/jacoco/report.exec</sonar.jacoco.reportPath>
+		<sonar.junit.reportsPath>${project.build.directory}/surefire-reports</sonar.junit.reportsPath>
 	</properties>
 
 	<modules>
@@ -200,20 +204,27 @@
 			<plugin>
 				<groupId>org.jacoco</groupId>
 				<artifactId>jacoco-maven-plugin</artifactId>
+				<configuration>
+					<!-- Where to put jacoco coverage report -->
+					<destFile>${sonar.jacoco.reportPath}</destFile>
+					<includes>
+						<include>org.bonitasoft.userfilter.*</include>
+					</includes>
+					<append>true</append>
+				</configuration>
 				<executions>
 					<execution>
-						<id>prepare-agent</id>
+						<id>pre-test</id>
 						<goals>
 							<goal>prepare-agent</goal>
 						</goals>
-						<configuration>
-							<!-- Where to put jacoco coverage report -->
-							<destFile>${sonar.jacoco.reportPath}</destFile>
-							<includes>
-								<include>org.bonitasoft.*</include>
-							</includes>
-							<append>true</append>
-						</configuration>
+					</execution>
+					<execution>
+						<id>post-test</id>
+						<phase>test</phase>
+						<goals>
+							<goal>report</goal>
+						</goals>
 					</execution>
 				</executions>
 			</plugin>
