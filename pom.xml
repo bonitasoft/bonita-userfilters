@@ -29,8 +29,8 @@
 		<sonar.branch>MasterBugFixing</sonar.branch>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>
 		<sonar.java.coveragePlugin>jacoco</sonar.java.coveragePlugin>
-		<sonar.jacoco.reportPath>${project.build.directory}/reports/jacoco</sonar.jacoco.reportPath>
-		<sonar.junit.reportsPath>${project.build.directory}/reports/surefire</sonar.junit.reportsPath>
+		<sonar.jacoco.reportPath>${project.build.directory}/reports/jacoco/report.exec</sonar.jacoco.reportPath>
+		<sonar.junit.reportsPath>${project.build.directory}/surefire-reports</sonar.junit.reportsPath>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
 	</properties>

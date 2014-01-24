@@ -125,7 +125,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<configuration>
-					<outputDirectory>${sonar.junit.reportsPath}</outputDirectory>
 					<systemPropertyVariables>
 						<bonita.home>${project.build.directory}/home</bonita.home>
 					</systemPropertyVariables>
