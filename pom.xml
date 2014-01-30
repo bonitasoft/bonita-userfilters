@@ -3,7 +3,7 @@
 	<groupId>org.bonitasoft.userfilter</groupId>
 	<artifactId>bonita-userfilter</artifactId>
 	<packaging>pom</packaging>
-	<version>6.2.2.rc-02</version>
+	<version>CITestTagToRemove</version>
 
 	<organization>
 		<name>BonitaSoft</name>
@@ -22,7 +22,7 @@
 	</prerequisites>
 
 	<properties>
-		<engine.version>6.2.2.rc-02</engine.version>
+		<engine.version>CITestTagToRemove</engine.version>
 		<!-- Properties to enable jacoco code coverage analysis -->
 		<sonar.core.codeCoveragePlugin>jacoco</sonar.core.codeCoveragePlugin>
 		<sonar.dynamicAnalysis>reuseReports</sonar.dynamicAnalysis>

@@ -4,7 +4,7 @@
 	<parent>
 		<artifactId>bonita-userfilter-initiator</artifactId>
 		<groupId>org.bonitasoft.userfilter</groupId>
-		<version>6.2.2.rc-02</version>
+		<version>CITestTagToRemove</version>
 	</parent>
 	<artifactId>bonita-userfilter-initiator-def</artifactId>
 	<version>1.0.0-SNAPSHOT</version>
