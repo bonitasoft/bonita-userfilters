@@ -13,7 +13,7 @@
  **/
 package org.bonitasoft.userfilter.test;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
 
 import java.io.InputStream;
 
@@ -70,7 +70,7 @@ public class SameTaskUserFilterTest extends APITestUtil {
         inputStream.close();
 
         final ProcessDefinition definition = getProcessAPI().deploy(businessArchiveBuilder.done());
-        addMappingOfActorsForUser(qualityGuys, aDev.getId(), definition);
+        getProcessAPI().addUserToActor(qualityGuys, definition, aDev.getId());
         final long processDefinitionId = definition.getId();
         getProcessAPI().enableProcess(processDefinitionId);
 

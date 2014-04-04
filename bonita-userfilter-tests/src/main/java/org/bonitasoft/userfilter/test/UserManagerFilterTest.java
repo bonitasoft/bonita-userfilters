@@ -73,8 +73,8 @@ public class UserManagerFilterTest extends APITestUtil {
         inputStream.close();
 
         final ProcessDefinition definition = getProcessAPI().deploy(businessArchiveBuilder.done());
-        addMappingOfActorsForUser(qualityGuys, chief.getId(), definition);
-        addMappingOfActorsForUser(qualityGuys, grouillot.getId(), definition);
+        getProcessAPI().addUserToActor(qualityGuys, definition, chief.getId());
+        getProcessAPI().addUserToActor(qualityGuys, definition, grouillot.getId());
         getProcessAPI().enableProcess(definition.getId());
 
         logout();
