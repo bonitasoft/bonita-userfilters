@@ -26,13 +26,15 @@ import org.bonitasoft.engine.bpm.flownode.ActivityInstanceCriterion;
 import org.bonitasoft.engine.bpm.process.ProcessDefinition;
 import org.bonitasoft.engine.bpm.process.ProcessInstance;
 import org.bonitasoft.engine.bpm.process.impl.ProcessDefinitionBuilder;
+import org.bonitasoft.engine.exception.BonitaException;
 import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.identity.UserUpdater;
 import org.bonitasoft.engine.test.APITestUtil;
-import org.bonitasoft.engine.test.wait.WaitForAssignedStep;
 import org.bonitasoft.userfilter.initiator.manager.ProcessinitiatorManagerUserFilter;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -42,63 +44,115 @@ import org.junit.runner.RunWith;
 @RunWith(BonitaTestRunner.class)
 @Initializer(TestsInitializer.class)
 public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
+	
+	private User matti;
+	private User aleksi;
+	private User juho;
+	private User processManager;
+	private ProcessDefinition definition;
+	private User managerOfProcessManager;
 
+
+	@Before
+	public void setUp() throws Exception{
+		final ExpressionBuilder expressionBuilder = new ExpressionBuilder();
+		final String delivery = "Delivery men";
+		
+		final BusinessArchiveBuilder businessArchiveBuilder = new BusinessArchiveBuilder().createNewBusinessArchive();
+		final ProcessDefinitionBuilder designProcessDefinition = new ProcessDefinitionBuilder().createNewInstance("ProcessWithAllConnector", "1.0");
+		designProcessDefinition.addActor(delivery).addDescription("Delivery all day and night long");
+		designProcessDefinition.addUserTask("step1", delivery).addUserFilter("initiator-manager", "initiator-manager", "1.0.0")
+		.addInput("autoAssign", expressionBuilder.createConstantBooleanExpression(true));
+		businessArchiveBuilder.setProcessDefinition(designProcessDefinition.done());
+		
+		final InputStream inputStream = ProcessinitiatorManagerUserFilter.class.getResourceAsStream("/initiator-manager-impl-1.0.0.impl");
+		Assert.assertNotNull(inputStream);
+		
+		businessArchiveBuilder.addUserFilters(new BarResource("initiator-manager-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
+		inputStream.close();
+		
+		login();
+		matti = getIdentityAPI().createUser("matti", "bpm");
+		aleksi = getIdentityAPI().createUser("aleksi", "bpm");
+		juho = getIdentityAPI().createUser("juho", "bpm");
+		processManager = getIdentityAPI().createUser("processManager", "bpm");
+		managerOfProcessManager = getIdentityAPI().createUser("managerOfProcessManager", "bpm");
+		
+		final UserUpdater updateDescriptor = new UserUpdater();
+		updateDescriptor.setManagerId(aleksi.getId());
+		getIdentityAPI().updateUser(matti.getId(), updateDescriptor);
+		getIdentityAPI().updateUser(juho.getId(), updateDescriptor);
+		
+		
+		final UserUpdater updateDescriptor2 = new UserUpdater();
+		updateDescriptor2.setManagerId(managerOfProcessManager.getId());
+		getIdentityAPI().updateUser(processManager.getId(), updateDescriptor2);
+		
+		definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+		getProcessAPI().addUserToActor(delivery, definition, matti.getId());
+		getProcessAPI().addUserToActor(delivery, definition, aleksi.getId());
+		getProcessAPI().addUserToActor(delivery, definition, juho.getId());
+		
+		getProcessAPI().enableProcess(definition.getId());
+		logout();
+	}
+	
+	@After
+	public void tearDown() throws Exception{
+		login();
+		disableAndDeleteProcess(definition);
+		deleteUser(matti);
+		deleteUser(aleksi);
+		deleteUser(juho);
+		deleteUser(processManager);
+		deleteUser(managerOfProcessManager);
+		logout();
+	}
+	
+	
     @Test
     public void testProcessinitiatorManagerUserFilterTest() throws Exception {
-        final ExpressionBuilder expressionBuilder = new ExpressionBuilder();
-        final String delivery = "Delivery men";
-
-        final BusinessArchiveBuilder businessArchiveBuilder = new BusinessArchiveBuilder().createNewBusinessArchive();
-        final ProcessDefinitionBuilder designProcessDefinition = new ProcessDefinitionBuilder().createNewInstance("ProcessWithAllConnector", "1.0");
-        designProcessDefinition.addActor(delivery).addDescription("Delivery all day and night long");
-        designProcessDefinition.addUserTask("step1", delivery).addUserFilter("initiator-manager", "initiator-manager", "1.0.0")
-                .addInput("autoAssign", expressionBuilder.createConstantBooleanExpression(true));
-        businessArchiveBuilder.setProcessDefinition(designProcessDefinition.done());
-
-        final InputStream inputStream = ProcessinitiatorManagerUserFilter.class.getResourceAsStream("/initiator-manager-impl-1.0.0.impl");
-        Assert.assertNotNull(inputStream);
-
-        businessArchiveBuilder.addUserFilters(new BarResource("initiator-manager-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
-        inputStream.close();
-
-        login();
-        final User matti = getIdentityAPI().createUser("matti", "bpm");
-        final User aleksi = getIdentityAPI().createUser("aleksi", "bpm");
-        final User juho = getIdentityAPI().createUser("juho", "bpm");
-
-        final UserUpdater updateDescriptor = new UserUpdater();
-        updateDescriptor.setManagerId(aleksi.getId());
-        getIdentityAPI().updateUser(matti.getId(), updateDescriptor);
-        getIdentityAPI().updateUser(juho.getId(), updateDescriptor);
-
-        final ProcessDefinition definition = getProcessAPI().deploy(businessArchiveBuilder.done());
-        getProcessAPI().addUserToActor(delivery, definition, matti.getId());
-        getProcessAPI().addUserToActor(delivery, definition, aleksi.getId());
-        getProcessAPI().addUserToActor(delivery, definition, juho.getId());
-
-        getProcessAPI().enableProcess(definition.getId());
-        logout();
-
         loginWith("matti", "bpm");
         final ProcessInstance processInstance = getProcessAPI().startProcess(definition.getId());
+        
+        waitForUserTask("step1", processInstance);
+        logout();
+        
+        checkAssignations();
+    }
+    
+    @Test
+    public void testProcessinitiatorManagerUserFilterTestWithStartFor() throws Exception {
+        loginWith("processManager", "bpm");
+        final ProcessInstance processInstance = getProcessAPI().startProcess(matti.getId(), definition.getId());
 
-        final WaitForAssignedStep waitForAssignedStep = new WaitForAssignedStep(getProcessAPI(), "step1", processInstance.getId(), aleksi.getId());
-        Assert.assertTrue(waitForAssignedStep.waitUntil());
-        Assert.assertEquals(0, getProcessAPI().getAssignedHumanTaskInstances(matti.getId(), 0, 10, ActivityInstanceCriterion.NAME_DESC).size());
+        waitForUserTask("step1", processInstance);
+        logout();
+        
+        checkAssignations();
+    }
+    
+	private void checkAssignations() throws BonitaException {
+		loginWith("matti", "bpm");
+		checkNumberOfAssignationFor(0, matti);
         logout();
         loginWith("aleksi", "bpm");
-        Assert.assertEquals(1, getProcessAPI().getAssignedHumanTaskInstances(aleksi.getId(), 0, 10, ActivityInstanceCriterion.NAME_DESC).size());
+        checkNumberOfAssignationFor(1, aleksi);
         logout();
         loginWith("juho", "bpm");
-        Assert.assertEquals(0, getProcessAPI().getAssignedHumanTaskInstances(juho.getId(), 0, 10, ActivityInstanceCriterion.NAME_DESC).size());
+        checkNumberOfAssignationFor(0, juho);
         logout();
-
-        login();
-        disableAndDeleteProcess(definition);
-        deleteUser(matti);
-        deleteUser(aleksi);
-        deleteUser(juho);
+        loginWith("managerOfProcessManager", "bpm");
+        checkNumberOfAssignationFor(0, managerOfProcessManager);
         logout();
-    }
+	}
+	
+	private void checkNumberOfAssignationFor(final int expected, final User user) {
+		Assert.assertEquals("There is no the right number of assigned task for user "+user, expected, getNumberOfAssignedTasks(user.getId()));
+	}
+	
+	private int getNumberOfAssignedTasks(final long userId) {
+		return getProcessAPI().getAssignedHumanTaskInstances(userId, 0, 10, ActivityInstanceCriterion.NAME_DESC).size();
+	}
 
 }

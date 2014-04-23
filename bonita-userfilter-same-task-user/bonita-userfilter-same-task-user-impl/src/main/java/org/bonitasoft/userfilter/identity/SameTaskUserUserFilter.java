@@ -43,7 +43,7 @@ public class SameTaskUserUserFilter extends AbstractUserFilter {
     }
 
     @Override
-    public List<Long> filter(@SuppressWarnings("unused") final String actorName) throws UserFilterException {
+    public List<Long> filter(final String actorName) throws UserFilterException {
         final String usertaskName = (String) getInputParameter("usertaskName");
         final SearchOptionsBuilder searchOptionsBuilder = new SearchOptionsBuilder(0, 2000)
                 .filter(ArchivedHumanTaskInstanceSearchDescriptor.PROCESS_INSTANCE_ID, getExecutionContext().getProcessInstanceId())
