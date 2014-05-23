@@ -2,13 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <parent>
     <groupId>org.bonitasoft.userfilter</groupId>
-    <artifactId>bonita-userfilter</artifactId>
+    <artifactId>bonita-userfilter-custom-user-info</artifactId>
     <version>6.3.1-SNAPSHOT</version>
   </parent>
-  <artifactId>bontia-userfilter-custom-user-info</artifactId>
-  <packaging>pom</packaging>
-  <modules>
-  	<module>bontia-userfilter-custom-user-info-def</module>
-  	<module>bontia-userfilter-custom-user-info-impl</module>
-  </modules>
+  <artifactId>bonita-userfilter-custom-user-info-def</artifactId>
 </project>
