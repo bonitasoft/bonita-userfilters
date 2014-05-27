@@ -27,9 +27,13 @@ import org.bonitasoft.engine.filter.UserFilterException;
  */
 public class CustomUserInfoUserFilter extends AbstractUserFilter {
 
+    private static final String AUTO_ASSIGN_KEY = "autoAssign";
+
     private static final String CUSTOM_USER_INFO_NAME_KEY = "customUserInfoName";
 
     private static final String CUSTOM_USER_INFO_VALUE_KEY = "customUserInfoValue";
+
+    private static final String USE_PARTIAL_MATCH_KEY = "usePartialMatch";
 
     private int maxResults = 500;
 
@@ -43,10 +47,11 @@ public class CustomUserInfoUserFilter extends AbstractUserFilter {
     public List<Long> filter(String actorName) throws UserFilterException {
         String infoName = getStringInputParameter(CUSTOM_USER_INFO_NAME_KEY);
         String infoValue = getStringInputParameter(CUSTOM_USER_INFO_VALUE_KEY);
+        Boolean usePartialMatch = shouldUsePartialMatch();
 
         IdentityAPI identityAPI = getAPIAccessor().getIdentityAPI();
         ProcessAPI processAPI = getAPIAccessor().getProcessAPI();
-        List<Long> usersWithInfo = getAllUserIdsWithInfo(infoName, infoValue, identityAPI);
+        List<Long> usersWithInfo = getAllUserIdsWithInfo(infoName, infoValue, usePartialMatch, identityAPI);
         List<Long> userIdsForActor = getAllUserIdsForActor(actorName, processAPI);
         
         usersWithInfo.retainAll(userIdsForActor);
@@ -54,13 +59,18 @@ public class CustomUserInfoUserFilter extends AbstractUserFilter {
         return Collections.unmodifiableList(usersWithInfo);
     }
 
+    private Boolean shouldUsePartialMatch() {
+        Boolean usePartialMatch = getOptinalInputParameter(USE_PARTIAL_MATCH_KEY);
+        return usePartialMatch == null? false: usePartialMatch;
+    }
+
     private List<Long> getAllUserIdsForActor(String actorName, ProcessAPI processAPI) {
         PageAssembler<Long> pageAssembler = getPageAssember(new UsersOfActorPageRetriever(processAPI, getExecutionContext().getProcessDefinitionId(), actorName, maxResults));
         return pageAssembler.getAllElements();
     }
 
-    private List<Long> getAllUserIdsWithInfo(String infoName, String infoValue, IdentityAPI identityAPI) {
-        PageAssembler<Long> pageAssembler = getPageAssember(new UsersWithCustomUserInfoPageRetriever(identityAPI, infoName, infoValue, maxResults));
+    private List<Long> getAllUserIdsWithInfo(String infoName, String infoValue, boolean usePartialMatch, IdentityAPI identityAPI) {
+        PageAssembler<Long> pageAssembler = getPageAssember(new UsersWithCustomUserInfoPageRetriever(identityAPI, infoName, infoValue, usePartialMatch, maxResults));
         return pageAssembler.getAllElements();
     }
     
@@ -70,6 +80,12 @@ public class CustomUserInfoUserFilter extends AbstractUserFilter {
 
     protected void setMaxResults(int maxResults) {
         this.maxResults = maxResults;
+    }
+    
+    @Override
+    public boolean shouldAutoAssignTaskIfSingleResult() {
+        Boolean autoAssign = getOptinalInputParameter(AUTO_ASSIGN_KEY);
+        return autoAssign == null? true : autoAssign;
     }
 
 }

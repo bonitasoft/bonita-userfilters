@@ -28,16 +28,19 @@ public class UsersWithCustomUserInfoPageRetriever extends PageRetriever<Long> {
 
     private String customUserInfoValue;
 
-    public UsersWithCustomUserInfoPageRetriever(IdentityAPI identityAPI, String customUserInfoName, String CustomUserInfoValue, int maxPageSize) {
+    private boolean usePartialMatch;
+
+    public UsersWithCustomUserInfoPageRetriever(IdentityAPI identityAPI, String customUserInfoName, String customUserInfoValue, boolean usePartialMatch, int maxPageSize) {
         super(maxPageSize);
         this.identityAPI = identityAPI;
         this.customUserInfoName = customUserInfoName;
-        customUserInfoValue = CustomUserInfoValue;
+        this.customUserInfoValue = customUserInfoValue;
+        this.usePartialMatch = usePartialMatch;
     }
 
     @Override
     public List<Long> getCurrentPage() {
-        return identityAPI.getUserIdsWithCustomUserInfo(customUserInfoName, customUserInfoValue, getStartIndex(), getMaxPageSize());
+        return identityAPI.getUserIdsWithCustomUserInfo(customUserInfoName, customUserInfoValue, usePartialMatch, getStartIndex(), getMaxPageSize());
     }
 
 }

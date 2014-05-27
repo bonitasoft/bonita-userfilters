@@ -140,7 +140,7 @@ public class CustomUserInfoUserFilterTest {
         // given
         List<Long> usersWithInfo = Arrays.asList(1L, 2L);
         List<Long> usersOfActor = Arrays.asList(1L, 2L, 3L);
-        when(identityAPI.getUserIdsWithCustomUserInfo(INFO_NAME, INFO_VALUE, 0, MAX_RESULTS)).thenReturn(usersWithInfo);
+        when(identityAPI.getUserIdsWithCustomUserInfo(INFO_NAME, INFO_VALUE, false, 0, MAX_RESULTS)).thenReturn(usersWithInfo);
         when(processAPI.getUserIdsForActor(PROCESS_DEFINITION_ID, ACTOR_NAME, 0, MAX_RESULTS)).thenReturn(usersOfActor);
 
         // when
@@ -155,7 +155,7 @@ public class CustomUserInfoUserFilterTest {
         // given
         List<Long> usersWithInfo = Arrays.asList(1L, 2L, 3L, 7L);
         List<Long> usersOfActor = Arrays.asList(2L, 3L, 8L);
-        when(identityAPI.getUserIdsWithCustomUserInfo(INFO_NAME, INFO_VALUE, 0, MAX_RESULTS)).thenReturn(usersWithInfo);
+        when(identityAPI.getUserIdsWithCustomUserInfo(INFO_NAME, INFO_VALUE, false, 0, MAX_RESULTS)).thenReturn(usersWithInfo);
         when(processAPI.getUserIdsForActor(PROCESS_DEFINITION_ID, ACTOR_NAME, 0, MAX_RESULTS)).thenReturn(usersOfActor);
 
         // when
@@ -163,6 +163,40 @@ public class CustomUserInfoUserFilterTest {
 
         // then
         assertThat(filteredUsers).containsExactly(2L, 3L);
+    }
+    
+    
+    @Test
+    public void shoulAutoAssign_should_return_true_if_property_autoAssign_is_not_set() throws Exception {
+        //when
+        boolean autoAssign = filter.shouldAutoAssignTaskIfSingleResult();
+
+        //then
+        assertThat(autoAssign).isTrue();
+    }
+
+    @Test
+    public void shoulAutoAssign_should_return_false_if_property_autoAssign_is_set_to_false() throws Exception {
+        //given
+        filter.setInputParameters(Collections.<String, Object>singletonMap("autoAssign", false));
+        
+        //when
+        boolean autoAssign = filter.shouldAutoAssignTaskIfSingleResult();
+        
+        //then
+        assertThat(autoAssign).isFalse();
+    }
+
+    @Test
+    public void shoulAutoAssign_should_return_true_if_property_autoAssign_is_set_to_true() throws Exception {
+        //given
+        filter.setInputParameters(Collections.<String, Object>singletonMap("autoAssign", true));
+        
+        //when
+        boolean autoAssign = filter.shouldAutoAssignTaskIfSingleResult();
+        
+        //then
+        assertThat(autoAssign).isTrue();
     }
 
 }
