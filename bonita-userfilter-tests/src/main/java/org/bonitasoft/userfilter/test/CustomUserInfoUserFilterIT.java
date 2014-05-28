@@ -85,7 +85,7 @@ public class CustomUserInfoUserFilterIT extends APITestUtil {
     }
 
     @Test
-    public void custom_user_info_user_filder_should_return_only_users_with_a_given_user_info_respecting_the_actor_mapping() throws Exception {
+    public void custom_user_info_user_filter_should_return_only_users_with_a_given_user_info_respecting_the_actor_mapping() throws Exception {
         // given
         // map users to groups
         UserMembership membership1 = getIdentityAPI().addUserMembership(user1.getId(), group1.getId(), role.getId());
