@@ -3,7 +3,7 @@
 	<id>custom-user-info</id>
 	<version>1.0.0</version>
 
-	<category id="organization" icon="manage.png" />
+	<category id="organization" icon="actors_mapping.png" />
 
 	<input name="customUserInfoName" type="java.lang.String" mandatory="true" />
 	<input name="customUserInfoValue" type="java.lang.String" mandatory="true" />
