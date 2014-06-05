@@ -57,7 +57,7 @@ public class CustomUserInfoUserFilterIT extends APITestUtil {
 
     @Before
     public void setUp() throws Exception {
-        login();
+        loginOnDefaultTenantWithDefaultTechnicalLogger();
         user1 = createUser("john", "bpm");
         user2 = createUser("james", "bpm");
         user3 = createUser("paul", "bpm");
@@ -81,7 +81,7 @@ public class CustomUserInfoUserFilterIT extends APITestUtil {
 
         getIdentityAPI().deleteCustomUserInfoDefinition(userInfoDefinition.getId());
 
-        logout();
+        logoutOnTenant();
     }
 
     @Test
