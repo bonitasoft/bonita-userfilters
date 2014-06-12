@@ -59,7 +59,7 @@ public class CustomUserInfoUserFilter extends AbstractUserFilter {
         return Collections.unmodifiableList(usersWithInfo);
     }
 
-    private Boolean shouldUsePartialMatch() {
+    protected Boolean shouldUsePartialMatch() {
         Boolean usePartialMatch = getOptinalInputParameter(USE_PARTIAL_MATCH_KEY);
         return usePartialMatch == null? false: usePartialMatch;
     }
