@@ -50,7 +50,7 @@ public class UserManagerFilterTest extends APITestUtil {
         final String subordinateName = "grouillot";
         final String activityName = "step1";
 
-        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        loginOnDefaultTenantWithDefaultTechnicalUser();
 
         final User chief = getIdentityAPI().createUser(chiefName, "bpm");
         final User grouillot = getIdentityAPI().createUser(
