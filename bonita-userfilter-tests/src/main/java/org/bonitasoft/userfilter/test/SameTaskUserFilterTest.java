@@ -108,7 +108,7 @@ public class SameTaskUserFilterTest extends APITestUtil {
 
         final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK2_NAME, TestStates.READY);
         assertEquals(aDev.getId(), task2.getAssigneeId());
-        assertEquals(TestStates.READY, task2.getState());
+        assertEquals(TestStates.READY.getStateName(), task2.getState());
         logoutOnTenant();
     }
 
