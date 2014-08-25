@@ -44,86 +44,89 @@ import org.junit.runner.RunWith;
 @RunWith(BonitaTestRunner.class)
 @Initializer(TestsInitializer.class)
 public class SameTaskUserFilterTest extends APITestUtil {
-	
-	private ProcessInstance processInstance;
-	private User aDev;
-	private ProcessDefinition definition;
-	private User processManager;
-	private final static String TASK2_NAME = "step2";
-	private final static String TASK1_NAME = "step1";
 
+    private ProcessInstance processInstance;
 
-	@Before
-	public void setUp() throws Exception{
-		final String qualityGuys = "Quality Guys";
-		final String devName = "aDeveloper";
-		
-		loginOnDefaultTenantWithDefaultTechnicalLogger();
-		aDev = getIdentityAPI().createUser(devName, "bpm");
-		processManager = getIdentityAPI().createUser("processManager", "bpm");
-		logoutThenloginAs(devName, "bpm");
-		
-		final ProcessDefinitionBuilder designProcessDefinition = new ProcessDefinitionBuilder().createNewInstance(
-				"test with Provided SameTask User implem of UserFilter", "1.0");
-		designProcessDefinition.addActor(qualityGuys);
-		final String userFilterDefinitionId = "same-task-user";
-		designProcessDefinition.addUserTask(TASK1_NAME, qualityGuys);
-		designProcessDefinition.addUserTask(TASK2_NAME, qualityGuys).addUserFilter("Filters the executor of a previous task", userFilterDefinitionId, "1.0.0")
-		.addInput("usertaskName", new ExpressionBuilder().createConstantStringExpression(TASK1_NAME))
-		.addInput("autoAssign", new ExpressionBuilder().createConstantBooleanExpression(true));
-		designProcessDefinition.addTransition(TASK1_NAME, TASK2_NAME);
-		final BusinessArchiveBuilder businessArchiveBuilder = new BusinessArchiveBuilder().createNewBusinessArchive();
-		businessArchiveBuilder.setProcessDefinition(designProcessDefinition.done());
-		
-		final InputStream inputStream = UserManagerUserFilter.class.getResourceAsStream("/same-task-user-impl-1.0.0.impl");
-		businessArchiveBuilder.addUserFilters(new BarResource("same-task-user-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
-		inputStream.close();
-		
-		definition = getProcessAPI().deploy(businessArchiveBuilder.done());
-		getProcessAPI().addUserToActor(qualityGuys, definition, aDev.getId());
-		final long processDefinitionId = definition.getId();
-		getProcessAPI().enableProcess(processDefinitionId);
-		
-		processInstance = getProcessAPI().startProcess(processDefinitionId);
-	}
-	
+    private User aDev;
+
+    private ProcessDefinition definition;
+
+    private User processManager;
+
+    private final static String TASK2_NAME = "step2";
+
+    private final static String TASK1_NAME = "step1";
+
+    @Before
+    public void setUp() throws Exception {
+        final String qualityGuys = "Quality Guys";
+        final String devName = "aDeveloper";
+
+        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        aDev = getIdentityAPI().createUser(devName, "bpm");
+        processManager = getIdentityAPI().createUser("processManager", "bpm");
+        logoutThenloginAs(devName, "bpm");
+
+        final ProcessDefinitionBuilder designProcessDefinition = new ProcessDefinitionBuilder().createNewInstance(
+                "test with Provided SameTask User implem of UserFilter", "1.0");
+        designProcessDefinition.addActor(qualityGuys);
+        final String userFilterDefinitionId = "same-task-user";
+        designProcessDefinition.addUserTask(TASK1_NAME, qualityGuys);
+        designProcessDefinition.addUserTask(TASK2_NAME, qualityGuys).addUserFilter("Filters the executor of a previous task", userFilterDefinitionId, "1.0.0")
+                .addInput("usertaskName", new ExpressionBuilder().createConstantStringExpression(TASK1_NAME))
+                .addInput("autoAssign", new ExpressionBuilder().createConstantBooleanExpression(true));
+        designProcessDefinition.addTransition(TASK1_NAME, TASK2_NAME);
+        final BusinessArchiveBuilder businessArchiveBuilder = new BusinessArchiveBuilder().createNewBusinessArchive();
+        businessArchiveBuilder.setProcessDefinition(designProcessDefinition.done());
+
+        final InputStream inputStream = UserManagerUserFilter.class.getResourceAsStream("/same-task-user-impl-1.0.0.impl");
+        businessArchiveBuilder.addUserFilters(new BarResource("same-task-user-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
+        inputStream.close();
+
+        definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        getProcessAPI().addUserToActor(qualityGuys, definition, aDev.getId());
+        final long processDefinitionId = definition.getId();
+        getProcessAPI().enableProcess(processDefinitionId);
+
+        processInstance = getProcessAPI().startProcess(processDefinitionId);
+    }
+
     @After
-	public void tearDown() throws BonitaException {
-		loginOnDefaultTenantWithDefaultTechnicalLogger();
+    public void tearDown() throws BonitaException {
+        loginOnDefaultTenantWithDefaultTechnicalLogger();
         disableAndDeleteProcess(definition);
         deleteUser(aDev);
         deleteUser(processManager);
         logoutOnTenant();
-	}
-	
-	
+    }
+
     @Test
     public void testSameTaskUserFilter() throws Exception {
-        final HumanTaskInstance task1 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK1_NAME, TestStates.getReadyState());
+        final HumanTaskInstance task1 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK1_NAME, TestStates.READY);
         final long userId = aDev.getId();
         assignAndExecuteStep(task1, userId);
 
-        final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK2_NAME, TestStates.getReadyState());
+        final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK2_NAME, TestStates.READY);
         assertEquals(aDev.getId(), task2.getAssigneeId());
-        assertEquals(TestStates.getReadyState(), task2.getState());
+        assertEquals(TestStates.READY, task2.getState());
         logoutOnTenant();
     }
-    
+
     @Test
     public void testSameTaskUserFilterWithDoFor() throws Exception {
-        final HumanTaskInstance task1 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK1_NAME, TestStates.getReadyState());
+        final HumanTaskInstance task1 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK1_NAME, TestStates.READY);
         final long userId = aDev.getId();
         logoutOnTenant();
         loginOnDefaultTenantWith(processManager.getUserName(), "bpm");
         getProcessAPI().assignUserTask(task1.getId(), userId);
         getProcessAPI().executeFlowNode(userId, task1.getId());
         logoutOnTenant();
-        
-    loginOnDefaultTenantWithDefaultTechnicalLogger();
-        final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK2_NAME, TestStates.getReadyState());
+
+        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK2_NAME, TestStates.READY);
         assertEquals(aDev.getId(), task2.getAssigneeId());
-        assertEquals(TestStates.getReadyState(), task2.getState());
+        assertEquals(TestStates.READY.getStateName(), task2.getState());
         logoutOnTenant();
     }
-    
+
 }
