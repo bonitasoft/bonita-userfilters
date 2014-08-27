@@ -57,7 +57,7 @@ public class CustomUserInfoUserFilterIT extends APITestUtil {
 
     @Before
     public void setUp() throws Exception {
-        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        loginOnDefaultTenantWithDefaultTechnicalUser();
         user1 = createUser("john", "bpm");
         user2 = createUser("james", "bpm");
         user3 = createUser("paul", "bpm");
