@@ -50,7 +50,7 @@ public class SingleUserFilterTest extends APITestUtil {
         final String grouillotName = "grouillot";
         final String activityName = "step1";
 
-    loginOnDefaultTenantWithDefaultTechnicalLogger();
+    loginOnDefaultTenantWithDefaultTechnicalUser();
 
         final User chief = getIdentityAPI().createUser(chiefName, "bpm");
         final User grouillot = getIdentityAPI().createUser(grouillotName, "bpm");
@@ -85,7 +85,7 @@ public class SingleUserFilterTest extends APITestUtil {
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final WaitForStep waitForStep = waitForStep( activityName, processInstance, TestStates.getReadyState());
+        final WaitForStep waitForStep = waitForStep(activityName, processInstance, TestStates.READY);
         Assert.assertTrue(waitForStep.waitUntil());
         final ActivityInstance task = waitForStep.getResult();
         Assert.assertEquals(grouillot.getId(), ((UserTaskInstance) task).getAssigneeId());
