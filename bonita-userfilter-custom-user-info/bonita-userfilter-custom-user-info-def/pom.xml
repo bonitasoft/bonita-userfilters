@@ -4,7 +4,7 @@
   <parent>
     <groupId>org.bonitasoft.userfilter</groupId>
     <artifactId>bonita-userfilter-custom-user-info</artifactId>
-    <version>6.3.6-SNAPSHOT</version>
+    <version>6.3.6</version>
   </parent>
   
   <artifactId>bonita-userfilter-custom-user-info-def</artifactId>
