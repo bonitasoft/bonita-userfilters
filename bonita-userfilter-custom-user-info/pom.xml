@@ -3,7 +3,7 @@
   <parent>
     <groupId>org.bonitasoft.userfilter</groupId>
     <artifactId>bonita-userfilter</artifactId>
-    <version>6.3.6-SNAPSHOT</version>
+    <version>6.3.7-SNAPSHOT</version>
   </parent>
   <artifactId>bonita-userfilter-custom-user-info</artifactId>
   <packaging>pom</packaging>
