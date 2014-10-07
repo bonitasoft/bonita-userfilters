@@ -35,7 +35,7 @@
 		<dependency>
 			<groupId>org.bonitasoft.userfilter</groupId>
 			<artifactId>bonita-userfilter-same-task-user-impl</artifactId>
-			<version>${project.version}</version>
+			<version>1.0.1-SNAPSHOT</version>
 		</dependency>
 		<dependency>
 			<groupId>org.bonitasoft.userfilter</groupId>
