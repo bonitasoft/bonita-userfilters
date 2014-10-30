@@ -61,8 +61,7 @@ public class SameTaskUserFilterTest extends APITestUtil {
     public void setUp() throws Exception {
         final String qualityGuys = "Quality Guys";
         final String devName = "aDeveloper";
-
-        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        loginOnDefaultTenantWithDefaultTechnicalUser();
         aDev = getIdentityAPI().createUser(devName, "bpm");
         processManager = getIdentityAPI().createUser("processManager", "bpm");
         logoutThenloginAs(devName, "bpm");
@@ -93,7 +92,7 @@ public class SameTaskUserFilterTest extends APITestUtil {
 
     @After
     public void tearDown() throws BonitaException {
-        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        loginOnDefaultTenantWithDefaultTechnicalUser();
         disableAndDeleteProcess(definition);
         deleteUser(aDev);
         deleteUser(processManager);
@@ -122,7 +121,7 @@ public class SameTaskUserFilterTest extends APITestUtil {
         getProcessAPI().executeFlowNode(userId, task1.getId());
         logoutOnTenant();
 
-        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        loginOnDefaultTenantWithDefaultTechnicalUser();
         final HumanTaskInstance task2 = (HumanTaskInstance) waitForTaskInState(processInstance, TASK2_NAME, TestStates.READY);
         assertEquals(aDev.getId(), task2.getAssigneeId());
         assertEquals(TestStates.READY.getStateName(), task2.getState());
