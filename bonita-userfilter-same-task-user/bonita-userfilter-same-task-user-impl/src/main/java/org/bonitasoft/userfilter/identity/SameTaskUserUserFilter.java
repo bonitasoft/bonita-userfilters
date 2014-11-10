@@ -1,16 +1,17 @@
 /**
- * Copyright (C) 2013 BonitaSoft S.A.
- * BonitaSoft, 31 rue Gustave Eiffel - 38000 Grenoble
- * This library is free software; you can redistribute it and/or modify it under the terms
- * of the GNU Lesser General Public License as published by the Free Software Foundation
- * version 2.1 of the License.
- * This library is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY;
- * without even the implied warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.
- * See the GNU Lesser General Public License for more details.
- * You should have received a copy of the GNU Lesser General Public License along with this
- * program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth
- * Floor, Boston, MA 02110-1301, USA.
- **/
+ * Copyright (C) 2013, 2014 BonitaSoft S.A.
+ * BonitaSoft, 32 rue Gustave Eiffel - 38000 Grenoble
+ * This program is free software: you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation, either version 2.0 of the License, or
+ * (at your option) any later version.
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the
+ * GNU General Public License for more details.
+ * You should have received a copy of the GNU General Public License
+ * along with this program. If not, see <http://www.gnu.org/licenses/>.
+ */
 package org.bonitasoft.userfilter.identity;
 
 import java.util.ArrayList;
@@ -29,8 +30,9 @@ import org.bonitasoft.engine.search.SearchResult;
 /**
  * Filters the userId(s) to the ones of the user(s) who executed a task specified by its name.
  * If a large number of task instances have the provided name for the running process, only the first 2000 results are returned.
- * 
+ *
  * @author Emmanuel Duchastenier
+ * @author Matthieu Chaffotte
  */
 public class SameTaskUserUserFilter extends AbstractUserFilter {
 
@@ -43,22 +45,23 @@ public class SameTaskUserUserFilter extends AbstractUserFilter {
     public List<Long> filter(final String actorName) throws UserFilterException {
         final String usertaskName = (String) getInputParameter("usertaskName");
         final SearchOptionsBuilder searchOptionsBuilder = new SearchOptionsBuilder(0, 2000)
-                .filter(ArchivedHumanTaskInstanceSearchDescriptor.PROCESS_INSTANCE_ID, getExecutionContext().getProcessInstanceId())
-                .filter(ArchivedHumanTaskInstanceSearchDescriptor.NAME, usertaskName).filter(ArchivedHumanTaskInstanceSearchDescriptor.TERMINAL, true);
+        .filter(ArchivedHumanTaskInstanceSearchDescriptor.PARENT_PROCESS_INSTANCE_ID, getExecutionContext().getProcessInstanceId())
+        .filter(ArchivedHumanTaskInstanceSearchDescriptor.NAME, usertaskName).filter(ArchivedHumanTaskInstanceSearchDescriptor.TERMINAL, true);
         SearchResult<ArchivedHumanTaskInstance> searchResult;
         try {
             searchResult = getAPIAccessor().getProcessAPI().searchArchivedHumanTasks(searchOptionsBuilder.done());
-        } catch (SearchException e) {
+        } catch (final SearchException e) {
             throw new UserFilterException("Problem searching for task named: " + usertaskName, e);
         }
         if (searchResult.getCount() == 0) {
             throw new UserFilterException("No finished task found with name: " + usertaskName);
         }
         final List<ArchivedHumanTaskInstance> tasks = searchResult.getResult();
-        List<Long> userIds = new ArrayList<Long>(tasks.size());
-        for (ArchivedHumanTaskInstance archivedTask : tasks) {
+        final List<Long> userIds = new ArrayList<Long>(tasks.size());
+        for (final ArchivedHumanTaskInstance archivedTask : tasks) {
             userIds.add(archivedTask.getExecutedBy());
         }
         return Collections.unmodifiableList(userIds);
     }
+
 }
