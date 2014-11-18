@@ -72,7 +72,7 @@ public class CustomUserInfoUserFilterTest {
     }
 
     @Test(expected = ConnectorValidationException.class)
-    public void validateInputParameters_throws_ConnectorValidationException_if_customUserInfoName_is_not_set() throws Exception {
+    public void validateInputParameters_throws_IllegalStateException_if_customUserInfoName_is_not_set() throws Exception {
         // given
         // only value is set
         filter = new CustomUserInfoUserFilter();
@@ -104,7 +104,7 @@ public class CustomUserInfoUserFilterTest {
     }
 
     @Test(expected = ConnectorValidationException.class)
-    public void validateInputParameters_throws_ConnectorValidationException_if_customUserInfoValue_is_not_set() throws Exception {
+    public void validateInputParameters_throws_IllegalStateException_if_customUserInfoValue_is_not_set() throws Exception {
         // given
         // only name is set
         filter = new CustomUserInfoUserFilter();
