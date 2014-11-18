@@ -160,6 +160,7 @@ public class CustomUserInfoUserFilterTest {
     @Test
     public void filter_should_return_only_users_with_given_user_info_and_actor() throws Exception {
         // given
+        addNameAndValueToFilter();
         List<Long> usersWithInfo = Arrays.asList(1L, 2L, 3L, 7L);
         List<Long> usersOfActor = Arrays.asList(2L, 3L, 8L);
         when(identityAPI.getUserIdsWithCustomUserInfo(INFO_NAME, INFO_VALUE, false, 0, MAX_RESULTS)).thenReturn(usersWithInfo);
@@ -174,7 +175,7 @@ public class CustomUserInfoUserFilterTest {
     
     
     @Test
-    public void shoulAutoAssign_should_return_true_if_property_autoAssign_is_not_set() throws Exception {
+    public void shouldAutoAssign_should_return_true_if_property_autoAssign_is_not_set() throws Exception {
         //when
         boolean autoAssign = filter.shouldAutoAssignTaskIfSingleResult();
 
