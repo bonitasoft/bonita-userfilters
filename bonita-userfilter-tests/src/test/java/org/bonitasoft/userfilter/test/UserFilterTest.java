@@ -1,8 +1,8 @@
 package org.bonitasoft.userfilter.test;
 
-import org.bonitasoft.engine.BonitaSuiteRunner;
-import org.bonitasoft.engine.BonitaSuiteRunner.Initializer;
 import org.bonitasoft.engine.TestsInitializer;
+import org.bonitasoft.engine.test.runner.BonitaSuiteRunner;
+import org.bonitasoft.engine.test.runner.BonitaSuiteRunner.Initializer;
 import org.junit.runner.RunWith;
 import org.junit.runners.Suite.SuiteClasses;
 
@@ -14,7 +14,7 @@ import org.junit.runners.Suite.SuiteClasses;
         ProcessInitiatorUserFilterTest.class,
         ProcessinitiatorManagerUserFilterTest.class,
         CustomUserInfoUserFilterIT.class
-        })
+})
 public class UserFilterTest {
 
 }
