@@ -71,7 +71,7 @@ public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
 		businessArchiveBuilder.addUserFilters(new BarResource("initiator-manager-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
 		inputStream.close();
 		
-		loginOnDefaultTenantWithDefaultTechnicalLogger();
+		loginOnDefaultTenantWithDefaultTechnicalUser();
 		matti = getIdentityAPI().createUser("matti", "bpm");
 		aleksi = getIdentityAPI().createUser("aleksi", "bpm");
 		juho = getIdentityAPI().createUser("juho", "bpm");
@@ -99,7 +99,7 @@ public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
 	
 	@After
 	public void tearDown() throws Exception{
-		loginOnDefaultTenantWithDefaultTechnicalLogger();
+		loginOnDefaultTenantWithDefaultTechnicalUser();
 		disableAndDeleteProcess(definition);
 		deleteUser(matti);
 		deleteUser(aleksi);

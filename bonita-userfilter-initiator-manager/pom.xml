@@ -4,21 +4,15 @@
 	<parent>
 		<artifactId>bonita-userfilter</artifactId>
 		<groupId>org.bonitasoft.userfilter</groupId>
-		<version>6.4.0-SNAPSHOT</version>
+        <version>6.5.0-SNAPSHOT</version>
 	</parent>
+
 	<artifactId>bonita-userfilter-initiator-manager</artifactId>
 	<packaging>pom</packaging>
+
 	<modules>
 		<module>bonita-userfilter-initiator-manager-def</module>
 		<module>bonita-userfilter-initiator-manager-impl</module>
 	</modules>
-	<dependencies>
-		<dependency>
-			<groupId>org.bonitasoft.engine.jndi</groupId>
-			<artifactId>bonita-jndi-memory</artifactId>
-			<version>${engine.version}</version>
-			<scope>test</scope>
-		</dependency>
-	</dependencies>
 	
 	</project>

@@ -29,8 +29,6 @@ import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.identity.UserCreator;
 import org.bonitasoft.engine.test.APITestUtil;
-import org.bonitasoft.engine.test.TestStates;
-import org.bonitasoft.engine.test.wait.WaitForStep;
 import org.bonitasoft.userfilter.identity.UserManagerUserFilter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -50,7 +48,7 @@ public class UserManagerFilterTest extends APITestUtil {
         final String subordinateName = "grouillot";
         final String activityName = "step1";
 
-        loginOnDefaultTenantWithDefaultTechnicalLogger();
+        loginOnDefaultTenantWithDefaultTechnicalUser();
 
         final User chief = getIdentityAPI().createUser(chiefName, "bpm");
         final User grouillot = getIdentityAPI().createUser(
@@ -77,7 +75,7 @@ public class UserManagerFilterTest extends APITestUtil {
         getProcessAPI().addUserToActor(qualityGuys, definition, grouillot.getId());
         getProcessAPI().enableProcess(definition.getId());
 
-        logoutOnTenant(); 
+        logoutOnTenant();
         loginOnDefaultTenantWith(subordinateName, "bpm");
 
         final ProcessInstance processInstance = getProcessAPI().startProcess(definition.getId());
@@ -85,8 +83,8 @@ public class UserManagerFilterTest extends APITestUtil {
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final WaitForStep task = waitForStep(activityName, processInstance, TestStates.getReadyState());
-        Assert.assertEquals(chief.getId(), ((HumanTaskInstance) task.getResult()).getAssigneeId());
+        final HumanTaskInstance task = waitForUserTask(activityName, processInstance);
+        Assert.assertEquals(chief.getId(), task.getAssigneeId());
 
         disableAndDeleteProcess(definition);
         deleteUser(chief);
