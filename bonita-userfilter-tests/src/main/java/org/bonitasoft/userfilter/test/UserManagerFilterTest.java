@@ -83,7 +83,7 @@ public class UserManagerFilterTest extends APITestUtil {
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final HumanTaskInstance task = waitForUserTask(processInstance, activityName);
+        final HumanTaskInstance task = waitForUserTaskAndGetIt(processInstance, activityName);
         Assert.assertEquals(chief.getId(), task.getAssigneeId());
 
         disableAndDeleteProcess(definition);

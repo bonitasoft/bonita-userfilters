@@ -83,7 +83,7 @@ public class SingleUserFilterTest extends APITestUtil {
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final ActivityInstance task = waitForUserTask(processInstance, activityName);
+        final ActivityInstance task = waitForUserTaskAndGetIt(processInstance, activityName);
         Assert.assertEquals(grouillot.getId(), ((UserTaskInstance) task).getAssigneeId());
 
         disableAndDeleteProcess(definition);
