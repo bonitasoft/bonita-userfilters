@@ -112,7 +112,7 @@ public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
         loginOnDefaultTenantWith("matti", "bpm");
         final ProcessInstance processInstance = getProcessAPI().startProcess(definition.getId());
 
-        waitForUserTask("step1", processInstance);
+        waitForUserTask(processInstance, "step1");
         logoutOnTenant();
 
         checkAssignations();
@@ -123,7 +123,7 @@ public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
         loginOnDefaultTenantWith("processManager", "bpm");
         final ProcessInstance processInstance = getProcessAPI().startProcess(matti.getId(), definition.getId());
 
-        waitForUserTask("step1", processInstance);
+        waitForUserTask(processInstance, "step1");
         logoutOnTenant();
 
         checkAssignations();
