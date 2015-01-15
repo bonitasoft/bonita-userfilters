@@ -104,7 +104,7 @@ public class CustomUserInfoUserFilterIT extends APITestUtil {
 
         // when
         final ProcessInstance processInstance = getProcessAPI().startProcess(processDefinition.getId());
-        waitForUserTask("step1", processInstance.getId());
+        waitForUserTask(processInstance, "step1");
         final List<HumanTaskInstance> pendingUser1 = getProcessAPI().getPendingHumanTaskInstances(user1.getId(), 0, 10, ActivityInstanceCriterion.DEFAULT);
         final List<HumanTaskInstance> pendingUser2 = getProcessAPI().getPendingHumanTaskInstances(user2.getId(), 0, 10, ActivityInstanceCriterion.DEFAULT);
         final List<HumanTaskInstance> pendingUser3 = getProcessAPI().getPendingHumanTaskInstances(user3.getId(), 0, 10, ActivityInstanceCriterion.DEFAULT);
@@ -114,7 +114,7 @@ public class CustomUserInfoUserFilterIT extends APITestUtil {
         assertThat(pendingUser1).hasSize(1); // group 1 and skills java -> candidate
         assertThat(pendingUser2).isEmpty(); // no skills java -> not candidate
         assertThat(pendingUser3).hasSize(1); // group 1 and skills java -> candidate
-        assertThat(pendingUser4).isEmpty(); // not in group1 -> not candidate 
+        assertThat(pendingUser4).isEmpty(); // not in group1 -> not candidate
 
         //cleanup
         deleteUserMemberships(membership1, membership2, membership3, membership4);
