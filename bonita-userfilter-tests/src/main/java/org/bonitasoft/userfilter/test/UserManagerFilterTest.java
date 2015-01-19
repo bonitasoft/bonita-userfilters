@@ -16,8 +16,6 @@ package org.bonitasoft.userfilter.test;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.engine.BonitaSuiteRunner.Initializer;
-import org.bonitasoft.engine.BonitaTestRunner;
 import org.bonitasoft.engine.TestsInitializer;
 import org.bonitasoft.engine.bpm.bar.BarResource;
 import org.bonitasoft.engine.bpm.bar.BusinessArchiveBuilder;
@@ -29,6 +27,8 @@ import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.identity.UserCreator;
 import org.bonitasoft.engine.test.APITestUtil;
+import org.bonitasoft.engine.test.runner.BonitaSuiteRunner.Initializer;
+import org.bonitasoft.engine.test.runner.BonitaTestRunner;
 import org.bonitasoft.userfilter.identity.UserManagerUserFilter;
 import org.junit.Assert;
 import org.junit.Test;
@@ -83,7 +83,7 @@ public class UserManagerFilterTest extends APITestUtil {
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final HumanTaskInstance task = waitForUserTask(activityName, processInstance);
+        final HumanTaskInstance task = waitForUserTaskAndGetIt(processInstance, activityName);
         Assert.assertEquals(chief.getId(), task.getAssigneeId());
 
         disableAndDeleteProcess(definition);
