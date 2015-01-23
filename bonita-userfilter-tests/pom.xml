@@ -57,16 +57,22 @@
             <scope>compile</scope>
         </dependency>
         <dependency>
+            <groupId>org.bonitasoft.engine.test</groupId>
+            <artifactId>bonita-server-test-utils</artifactId>
+            <version>${engine.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
             <groupId>org.bonitasoft.engine</groupId>
             <artifactId>bonita-server</artifactId>
             <version>${engine.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
-            <groupId>org.bonitasoft.engine.test</groupId>
-            <artifactId>bonita-server-test-utils</artifactId>
-            <version>${engine.version}</version>
-            <scope>compile</scope>
+            <groupId>ch.qos.logback</groupId>
+            <artifactId>logback-classic</artifactId>
+            <version>1.0.11</version>
+            <scope>test</scope>
         </dependency>
     </dependencies>
 
