@@ -98,7 +98,7 @@ public class ProcessInitiatorUserFilterTest extends APITestUtil {
         loginOnDefaultTenantWith("matti", "bpm");
         final ProcessInstance processInstance = getProcessAPI().startProcess(definition.getId());
 
-        waitForUserTask("step1", processInstance);
+        waitForUserTask(processInstance, "step1");
         checkAssignations();
     }
 
@@ -107,7 +107,7 @@ public class ProcessInitiatorUserFilterTest extends APITestUtil {
         loginOnDefaultTenantWith("processManager", "bpm");
         final ProcessInstance processInstance = getProcessAPI().startProcess(matti.getId(), definition.getId());
 
-        waitForUserTask("step1", processInstance);
+        waitForUserTask(processInstance, "step1");
         checkAssignations();
     }
 
