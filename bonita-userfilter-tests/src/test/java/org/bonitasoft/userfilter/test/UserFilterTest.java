@@ -13,7 +13,8 @@ import org.junit.runners.Suite.SuiteClasses;
         UserManagerFilterTest.class,
         ProcessInitiatorUserFilterTest.class,
         ProcessinitiatorManagerUserFilterTest.class,
-        CustomUserInfoUserFilterIT.class
+        CustomUserInfoUserFilterIT.class,
+        SameTaskUserFilterTest.class
 })
 public class UserFilterTest {
 
