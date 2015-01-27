@@ -78,8 +78,8 @@ public class SameTaskUserFilterTest extends APITestUtil {
         final BusinessArchiveBuilder businessArchiveBuilder = new BusinessArchiveBuilder().createNewBusinessArchive();
         businessArchiveBuilder.setProcessDefinition(designProcessDefinition.done());
 
-        final InputStream inputStream = UserManagerUserFilter.class.getResourceAsStream("/same-task-user-impl-1.0.0.impl");
-        businessArchiveBuilder.addUserFilters(new BarResource("same-task-user-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
+        final InputStream inputStream = UserManagerUserFilter.class.getResourceAsStream("/same-task-user-impl-1.0.1.impl");
+        businessArchiveBuilder.addUserFilters(new BarResource("same-task-user-impl-1.0.1.impl", IOUtils.toByteArray(inputStream)));
         inputStream.close();
 
         definition = getProcessAPI().deploy(businessArchiveBuilder.done());
