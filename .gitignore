@@ -5,3 +5,5 @@ target
 TemporaryUserFilterTests.java
 *.orig
 *.tmp
+
+*.iml
