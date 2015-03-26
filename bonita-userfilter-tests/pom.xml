@@ -43,7 +43,7 @@
         </dependency>
         <dependency>
             <groupId>org.bonitasoft.engine.test</groupId>
-            <artifactId>bonita-integration-tests-client</artifactId>
+            <artifactId>bonita-integration-tests-local</artifactId>
             <version>${engine.version}</version>
         </dependency>
         <dependency>
