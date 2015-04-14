@@ -140,7 +140,7 @@ public class CustomUserInfoUserFilterIT extends APITestUtil {
             inputStream.close();
         }
 
-        final ProcessDefinition processDefinition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        final ProcessDefinition processDefinition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addGroupToActor(actorName, actorGroup.getId(), processDefinition);
         getProcessAPI().enableProcess(processDefinition.getId());
 
