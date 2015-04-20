@@ -69,7 +69,7 @@ public class SingleUserFilterTest extends APITestUtil {
         businessArchiveBuilder.addUserFilters(new BarResource("single-user-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
         inputStream.close();
 
-        final ProcessDefinition definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        final ProcessDefinition definition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addUserToActor(qualityGuys, definition, chief.getId());
         getProcessAPI().addUserToActor(qualityGuys, definition, grouillot.getId());
 

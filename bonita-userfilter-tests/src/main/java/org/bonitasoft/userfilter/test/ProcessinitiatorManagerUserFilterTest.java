@@ -86,7 +86,7 @@ public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
         updateDescriptor2.setManagerId(managerOfProcessManager.getId());
         getIdentityAPI().updateUser(processManager.getId(), updateDescriptor2);
 
-        definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        definition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addUserToActor(delivery, definition, matti.getId());
         getProcessAPI().addUserToActor(delivery, definition, aleksi.getId());
         getProcessAPI().addUserToActor(delivery, definition, juho.getId());

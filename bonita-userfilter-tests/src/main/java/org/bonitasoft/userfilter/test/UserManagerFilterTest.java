@@ -70,7 +70,7 @@ public class UserManagerFilterTest extends APITestUtil {
         businessArchiveBuilder.addUserFilters(new BarResource("user-manager-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
         inputStream.close();
 
-        final ProcessDefinition definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        final ProcessDefinition definition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addUserToActor(qualityGuys, definition, chief.getId());
         getProcessAPI().addUserToActor(qualityGuys, definition, grouillot.getId());
         getProcessAPI().enableProcess(definition.getId());

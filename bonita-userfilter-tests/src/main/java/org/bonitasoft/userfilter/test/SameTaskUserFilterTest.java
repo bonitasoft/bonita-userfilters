@@ -82,7 +82,7 @@ public class SameTaskUserFilterTest extends APITestUtil {
         businessArchiveBuilder.addUserFilters(new BarResource("same-task-user-impl-1.0.1.impl", IOUtils.toByteArray(inputStream)));
         inputStream.close();
 
-        definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        definition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addUserToActor(qualityGuys, definition, aDev.getId());
         final long processDefinitionId = definition.getId();
         getProcessAPI().enableProcess(processDefinitionId);

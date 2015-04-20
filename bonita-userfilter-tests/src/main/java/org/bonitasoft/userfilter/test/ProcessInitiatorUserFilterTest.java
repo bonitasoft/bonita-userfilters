@@ -73,7 +73,7 @@ public class ProcessInitiatorUserFilterTest extends APITestUtil {
         juho = getIdentityAPI().createUser("juho", "bpm");
         processManager = getIdentityAPI().createUser("processManager", "bpm");
 
-        definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        definition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addUserToActor(delivery, definition, matti.getId());
         getProcessAPI().addUserToActor(delivery, definition, aleksi.getId());
         getProcessAPI().addUserToActor(delivery, definition, juho.getId());
