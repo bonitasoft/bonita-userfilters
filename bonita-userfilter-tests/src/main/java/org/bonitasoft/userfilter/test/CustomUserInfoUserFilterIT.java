@@ -6,7 +6,7 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.engine.TestsInitializer;
+import org.bonitasoft.engine.LocalServerTestsInitializer;
 import org.bonitasoft.engine.bpm.bar.BarResource;
 import org.bonitasoft.engine.bpm.bar.BusinessArchiveBuilder;
 import org.bonitasoft.engine.bpm.flownode.ActivityInstanceCriterion;
@@ -32,7 +32,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 
 @RunWith(BonitaTestRunner.class)
-@Initializer(TestsInitializer.class)
+@Initializer(LocalServerTestsInitializer.class)
 public class CustomUserInfoUserFilterIT extends APITestUtil {
 
     private static final String JAVA = "Java";
