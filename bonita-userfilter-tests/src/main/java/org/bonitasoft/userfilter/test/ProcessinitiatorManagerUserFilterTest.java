@@ -17,7 +17,7 @@ package org.bonitasoft.userfilter.test;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.engine.TestsInitializer;
+import org.bonitasoft.engine.LocalServerTestsInitializer;
 import org.bonitasoft.engine.bpm.bar.BarResource;
 import org.bonitasoft.engine.bpm.bar.BusinessArchiveBuilder;
 import org.bonitasoft.engine.bpm.flownode.ActivityInstanceCriterion;
@@ -42,7 +42,7 @@ import org.junit.runner.RunWith;
  * @author Aurelie Zara
  */
 @RunWith(BonitaTestRunner.class)
-@Initializer(TestsInitializer.class)
+@Initializer(LocalServerTestsInitializer.class)
 public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
 
     private User matti;
@@ -86,7 +86,7 @@ public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
         updateDescriptor2.setManagerId(managerOfProcessManager.getId());
         getIdentityAPI().updateUser(processManager.getId(), updateDescriptor2);
 
-        definition = getProcessAPI().deploy(businessArchiveBuilder.done());
+        definition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addUserToActor(delivery, definition, matti.getId());
         getProcessAPI().addUserToActor(delivery, definition, aleksi.getId());
         getProcessAPI().addUserToActor(delivery, definition, juho.getId());
