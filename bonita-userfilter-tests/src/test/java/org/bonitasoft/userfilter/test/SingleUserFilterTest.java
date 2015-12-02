@@ -11,84 +11,84 @@
  * program; if not, write to the Free Software Foundation, Inc., 51 Franklin Street, Fifth
  * Floor, Boston, MA 02110-1301, USA.
  **/
+
 package org.bonitasoft.userfilter.test;
 
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.engine.LocalServerTestsInitializer;
 import org.bonitasoft.engine.bpm.bar.BarResource;
 import org.bonitasoft.engine.bpm.bar.BusinessArchiveBuilder;
-import org.bonitasoft.engine.bpm.flownode.HumanTaskInstance;
+import org.bonitasoft.engine.bpm.flownode.ActivityInstance;
+import org.bonitasoft.engine.bpm.flownode.UserTaskInstance;
 import org.bonitasoft.engine.bpm.process.ProcessDefinition;
 import org.bonitasoft.engine.bpm.process.ProcessInstance;
 import org.bonitasoft.engine.bpm.process.impl.ProcessDefinitionBuilder;
 import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
-import org.bonitasoft.engine.identity.UserCreator;
 import org.bonitasoft.engine.test.APITestUtil;
-import org.bonitasoft.engine.test.runner.BonitaSuiteRunner.Initializer;
-import org.bonitasoft.engine.test.runner.BonitaTestRunner;
-import org.bonitasoft.userfilter.identity.UserManagerUserFilter;
+import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.junit.Assert;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
- * @author Emmanuel Duchastenier
+ * @author Celine Souchet
  */
-@RunWith(BonitaTestRunner.class)
-@Initializer(LocalServerTestsInitializer.class)
-public class UserManagerFilterTest extends APITestUtil {
+public class SingleUserFilterTest extends APITestUtil {
+
+    @Rule
+    public BonitaEngineRule bonitaEngineRule = BonitaEngineRule.create();
 
     @Test
-    public void testProvidedUserManagerFilter() throws Exception {
+    public void testSingleUserFilter() throws Exception {
         final String qualityGuys = "Quality Guys";
         final String chiefName = "chief";
-        final String subordinateName = "grouillot";
+        final String grouillotName = "grouillot";
         final String activityName = "step1";
 
         loginOnDefaultTenantWithDefaultTechnicalUser();
 
         final User chief = getIdentityAPI().createUser(chiefName, "bpm");
-        final User grouillot = getIdentityAPI().createUser(
-                new UserCreator(subordinateName, "bpm").setManagerUserId(chief.getId()).setManagerUserId(chief.getId()));
+        final User grouillot = getIdentityAPI().createUser(grouillotName, "bpm");
 
-        final BusinessArchiveBuilder businessArchiveBuilder = new BusinessArchiveBuilder().createNewBusinessArchive();
+        final ExpressionBuilder expressionBuilder = new ExpressionBuilder();
         final ProcessDefinitionBuilder designProcessDefinition = new ProcessDefinitionBuilder().createNewInstance(
                 "test with Provided UserManager implem of UserFilter", "1.0");
-        designProcessDefinition.addActor(qualityGuys);
-        final String userFilterDefinitionId = "user-manager";
-        designProcessDefinition.addUserTask(activityName, qualityGuys).addUserFilter("Filters the manager of the given user", userFilterDefinitionId, "1.0.0")
-                .addInput("userId", new ExpressionBuilder().createConstantLongExpression(grouillot.getId()))
-                .addInput("autoAssign", new ExpressionBuilder().createConstantBooleanExpression(true));
+        designProcessDefinition.addActor(qualityGuys).addUserTask(activityName, qualityGuys).addUserFilter("Filters the single user", "single-user", "1.0.0")
+                .addInput("userId", expressionBuilder.createConstantLongExpression(grouillot.getId()))
+                .addInput("autoAssign", expressionBuilder.createConstantBooleanExpression(true));
+
+        final BusinessArchiveBuilder businessArchiveBuilder = new BusinessArchiveBuilder().createNewBusinessArchive();
         businessArchiveBuilder.setProcessDefinition(designProcessDefinition.done());
 
-        final InputStream inputStream = UserManagerUserFilter.class.getResourceAsStream("/user-manager-impl-1.0.0.impl");
+        final InputStream inputStream = SingleUserFilterTest.class.getResourceAsStream("/single-user-impl-1.0.0.impl");
         Assert.assertNotNull(inputStream);
 
-        businessArchiveBuilder.addUserFilters(new BarResource("user-manager-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
+        businessArchiveBuilder.addUserFilters(new BarResource("single-user-impl-1.0.0.impl", IOUtils.toByteArray(inputStream)));
         inputStream.close();
 
         final ProcessDefinition definition = deployProcess(businessArchiveBuilder.done());
         getProcessAPI().addUserToActor(qualityGuys, definition, chief.getId());
         getProcessAPI().addUserToActor(qualityGuys, definition, grouillot.getId());
+
         getProcessAPI().enableProcess(definition.getId());
 
         logoutOnTenant();
-        loginOnDefaultTenantWith(subordinateName, "bpm");
+        loginOnDefaultTenantWith(grouillotName, "bpm");
 
         final ProcessInstance processInstance = getProcessAPI().startProcess(definition.getId());
 
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final HumanTaskInstance task = waitForUserTaskAndGetIt(processInstance, activityName);
-        Assert.assertEquals(chief.getId(), task.getAssigneeId());
+        final ActivityInstance task = waitForUserTaskAndGetIt(processInstance, activityName);
+        Assert.assertEquals(grouillot.getId(), ((UserTaskInstance) task).getAssigneeId());
 
         disableAndDeleteProcess(definition);
         deleteUser(chief);
         deleteUser(grouillot);
         logoutOnTenant();
     }
+
 }

@@ -6,7 +6,6 @@ import java.io.InputStream;
 import java.util.List;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.engine.LocalServerTestsInitializer;
 import org.bonitasoft.engine.bpm.bar.BarResource;
 import org.bonitasoft.engine.bpm.bar.BusinessArchiveBuilder;
 import org.bonitasoft.engine.bpm.flownode.ActivityInstanceCriterion;
@@ -23,17 +22,18 @@ import org.bonitasoft.engine.identity.Role;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.identity.UserMembership;
 import org.bonitasoft.engine.test.APITestUtil;
-import org.bonitasoft.engine.test.runner.BonitaSuiteRunner.Initializer;
-import org.bonitasoft.engine.test.runner.BonitaTestRunner;
+import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.bonitasoft.userfilter.custom.user.info.CustomUserInfoUserFilter;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
-@RunWith(BonitaTestRunner.class)
-@Initializer(LocalServerTestsInitializer.class)
 public class CustomUserInfoUserFilterIT extends APITestUtil {
+
+
+    @Rule
+    public BonitaEngineRule bonitaEngineRule = BonitaEngineRule.create();
 
     private static final String JAVA = "Java";
 

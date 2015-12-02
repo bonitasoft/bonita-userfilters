@@ -18,7 +18,6 @@ import static org.junit.Assert.assertEquals;
 import java.io.InputStream;
 
 import org.apache.commons.io.IOUtils;
-import org.bonitasoft.engine.LocalServerTestsInitializer;
 import org.bonitasoft.engine.bpm.bar.BarResource;
 import org.bonitasoft.engine.bpm.bar.BusinessArchiveBuilder;
 import org.bonitasoft.engine.bpm.flownode.HumanTaskInstance;
@@ -30,19 +29,16 @@ import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.test.APITestUtil;
 import org.bonitasoft.engine.test.TestStates;
-import org.bonitasoft.engine.test.runner.BonitaSuiteRunner.Initializer;
-import org.bonitasoft.engine.test.runner.BonitaTestRunner;
+import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.bonitasoft.userfilter.identity.UserManagerUserFilter;
 import org.junit.After;
 import org.junit.Before;
+import org.junit.Rule;
 import org.junit.Test;
-import org.junit.runner.RunWith;
 
 /**
  * @author Emmanuel Duchastenier
  */
-@RunWith(BonitaTestRunner.class)
-@Initializer(LocalServerTestsInitializer.class)
 public class SameTaskUserFilterTest extends APITestUtil {
 
     private ProcessInstance processInstance;
@@ -56,6 +52,9 @@ public class SameTaskUserFilterTest extends APITestUtil {
     private final static String TASK2_NAME = "step2";
 
     private final static String TASK1_NAME = "step1";
+
+    @Rule
+    public BonitaEngineRule bonitaEngineRule = BonitaEngineRule.create();
 
     @Before
     public void setUp() throws Exception {
