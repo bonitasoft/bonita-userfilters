@@ -83,6 +83,17 @@ public class SameTaskUserUserFilterTest {
         return result;
     }
 
+    private List<ArchivedHumanTaskInstance> buildMultipleResultList(final long userId) {
+        final List<ArchivedHumanTaskInstance> result = new ArrayList<ArchivedHumanTaskInstance>();
+        ArchivedUserTaskInstanceImpl instanceImpl = new ArchivedUserTaskInstanceImpl(HUMAN_TASK_NAME);
+        instanceImpl.setExecutedBy(4786L);
+        result.add(instanceImpl);
+        instanceImpl = new ArchivedUserTaskInstanceImpl(HUMAN_TASK_NAME);
+        instanceImpl.setExecutedBy(4786L);
+        result.add(instanceImpl);
+        return result;
+    }
+
     private SearchOptionsImpl buildSearchOptionsResult() {
         final SearchOptionsImpl optionsImpl = new SearchOptionsImpl(0, 2000);
         optionsImpl.addFilter(ArchivedHumanTaskInstanceSearchDescriptor.PARENT_PROCESS_INSTANCE_ID, PROCESS_INSTANCE_ID);
@@ -124,6 +135,22 @@ public class SameTaskUserUserFilterTest {
         when(processAPI.searchArchivedHumanTasks(any(SearchOptions.class))).thenReturn(searchResult);
         when(searchResult.getCount()).thenReturn(1L);
         final List<ArchivedHumanTaskInstance> result = buildSingleResultList(userId);
+        when(searchResult.getResult()).thenReturn(result);
+        final SearchOptionsImpl optionsImpl = buildSearchOptionsResult();
+
+        final List<Long> userIds = filter.filter("Employee");
+
+        assertThat(userIds).hasSize(1).contains(userId);
+        verify(processAPI).searchArchivedHumanTasks(optionsImpl);
+    }
+
+    @Test
+    public void filter_should_return_the_list_of_user_ids_without_duplicate() throws Exception {
+        final long userId = 4786L;
+        filter.setInputParameters(initParameters(HUMAN_TASK_NAME));
+        when(processAPI.searchArchivedHumanTasks(any(SearchOptions.class))).thenReturn(searchResult);
+        when(searchResult.getCount()).thenReturn(2L);
+        final List<ArchivedHumanTaskInstance> result = buildMultipleResultList(userId);
         when(searchResult.getResult()).thenReturn(result);
         final SearchOptionsImpl optionsImpl = buildSearchOptionsResult();
 

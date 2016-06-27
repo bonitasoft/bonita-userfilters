@@ -59,7 +59,10 @@ public class SameTaskUserUserFilter extends AbstractUserFilter {
         final List<ArchivedHumanTaskInstance> tasks = searchResult.getResult();
         final List<Long> userIds = new ArrayList<Long>(tasks.size());
         for (final ArchivedHumanTaskInstance archivedTask : tasks) {
-            userIds.add(archivedTask.getExecutedBy());
+            final long executorId = archivedTask.getExecutedBy();
+            if (!userIds.contains(executorId)) {
+                userIds.add(executorId);
+            }
         }
         return Collections.unmodifiableList(userIds);
     }
