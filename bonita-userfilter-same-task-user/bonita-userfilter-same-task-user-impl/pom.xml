@@ -8,13 +8,13 @@
     </parent>
 
     <artifactId>bonita-userfilter-same-task-user-impl</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.2</version>
 
     <dependencies>
         <dependency>
             <groupId>org.bonitasoft.userfilter</groupId>
             <artifactId>bonita-userfilter-same-task-user-def</artifactId>
-            <version>${project.version}</version>
+            <version>1.0.1-SNAPSHOT</version>
         </dependency>
 
         <!-- Tests -->

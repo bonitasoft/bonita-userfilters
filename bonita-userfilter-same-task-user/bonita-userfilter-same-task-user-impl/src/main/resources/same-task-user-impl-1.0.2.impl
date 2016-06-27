@@ -6,10 +6,10 @@
 	<definitionVersion>1.0.0</definitionVersion>
 	<implementationClassname>org.bonitasoft.userfilter.identity.SameTaskUserUserFilter</implementationClassname>
 	<implementationId>same-task-user-impl</implementationId>
-	<implementationVersion>1.0.1</implementationVersion>
+	<implementationVersion>1.0.2</implementationVersion>
 
 	<jarDependencies>
-		<jarDependency>bonita-userfilter-same-task-user-impl-1.0.1-SNAPSHOT.jar</jarDependency>
+		<jarDependency>bonita-userfilter-same-task-user-impl-1.0.2.jar</jarDependency>
 	</jarDependencies>
 
 </implementation:connectorImplementation>
