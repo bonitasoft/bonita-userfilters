@@ -14,15 +14,18 @@ timestamps {
 
             stage('🔧 Build') {
                 try {
-                    def goals = 'clean install'
-                     if (isBaseBranch()) {
-                         goals = 'clean deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}'
-                     }
+                    def goals = isBaseBranch() ? 
+                        "clean deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}" 
+                        : "clean install"
                     // the -B flag disables download progress logs
-                    sh "./mvnw -B $goal"
+                    sh "./mvnw -B $goals"
                 } finally {
-                    junit '**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml'
-                    archiveArtifacts '**/target/*.zip'
+                    try{
+                        junit '**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml'
+                        archiveArtifacts '**/target/*.zip'
+                    }catch (Exception e){
+                        
+                    }
                 }
             }
         }
