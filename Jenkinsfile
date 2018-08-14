@@ -14,12 +14,12 @@ timestamps {
 
             stage('🔧 Build') {
                 try {
-                    def goals = 'install'
+                    def goals = 'clean install'
+                     if (isBaseBranch()) {
+                         goals = 'clean deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}'
+                     }
                     // the -B flag disables download progress logs
-                    sh "./mvnw -B install"
-                    if (isBaseBranch()) {
-                          sh "./mvnw -B -f bonita-userfilter-package/pom.xml -B deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}"
-                    }
+                    sh "./mvnw -B $goal"
                 } finally {
                     junit '**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml'
                     archiveArtifacts '**/target/*.zip'
