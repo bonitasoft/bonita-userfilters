@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>bonita-userfilter</artifactId>
 		<groupId>org.bonitasoft.userfilter</groupId>
-		<version>7.8.0-SNAPSHOT</version>
+		<version>7.8.0.codedeposit-04</version>
 	</parent>
 
 	<artifactId>bonita-userfilter-package</artifactId>
