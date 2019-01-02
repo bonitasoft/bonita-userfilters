@@ -12,7 +12,7 @@ timestamps {
                 checkout scm
             }
 
-            stage('🔧 Build') {
+            stage('🔧 Build & Test') {
                 try {
                     def goals = isBaseBranch() ? 
                         "clean deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}" 
@@ -20,12 +20,8 @@ timestamps {
                     // the -B flag disables download progress logs
                     sh "./mvnw -B -Djvm=${env.JAVA_HOME_11}/bin/java $goals"
                 } finally {
-                    try{
-                        junit '**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml'
-                        archiveArtifacts '**/target/*.zip'
-                    }catch (Exception e){
-                        
-                    }
+                    junit '**/target/surefire-reports/*.xml'
+                    archiveArtifacts '**/target/*.zip'
                 }
             }
         }
