@@ -18,7 +18,7 @@ timestamps {
                         "clean deploy -DaltDeploymentRepository=${env.ALT_DEPLOYMENT_REPOSITORY_SNAPSHOTS}" 
                         : "clean install"
                     // the -B flag disables download progress logs
-                    sh "./mvnw -B $goals"
+                    sh "./mvnw -B -Djvm=${env.JAVA_HOME_11}/bin/java $goals"
                 } finally {
                     try{
                         junit '**/target/surefire-reports/*.xml,**/target/failsafe-reports/*.xml'
