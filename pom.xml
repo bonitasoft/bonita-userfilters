@@ -50,18 +50,10 @@
 		<module>bonita-userfilter-single-user</module>
 		<module>bonita-userfilter-same-task-user</module>
 		<module>bonita-userfilter-custom-user-info</module>
+		<module>bonita-userfilter-tests</module>
 		<!-- must be last -->
 		<module>bonita-userfilter-package</module>
 	</modules>
-
-	<profiles>
-		<profile>
-			<id>tests</id>
-			<modules>
-				<module>bonita-userfilter-tests</module>
-			</modules>
-		</profile>
-	</profiles>
 
 	<dependencies>
 		<dependency>
