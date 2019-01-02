@@ -75,7 +75,12 @@
         <dependency>
             <groupId>ch.qos.logback</groupId>
             <artifactId>logback-classic</artifactId>
-            <version>1.0.11</version>
+            <scope>test</scope>
+        </dependency>
+        <!-- Required by Java 11 -->
+        <dependency>
+            <groupId>javax.activation</groupId>
+            <artifactId>activation</artifactId>
             <scope>test</scope>
         </dependency>
     </dependencies>
