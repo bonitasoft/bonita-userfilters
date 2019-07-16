@@ -2,7 +2,7 @@
 
 def isBaseBranch() {
     def currentBranch = env.BRANCH_NAME
-    currentBranch == 'master' || currentBranch == 'dev'
+    currentBranch == 'master' || currentBranch == 'dev' || currentBranch == '7.7.x'
 }
 
 timestamps {
