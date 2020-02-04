@@ -42,19 +42,14 @@
             <version>${project.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.bonitasoft.engine.test</groupId>
-            <artifactId>bonita-server-test-utils</artifactId>
+            <groupId>org.bonitasoft.engine</groupId>
+            <artifactId>bonita-test-api</artifactId>
             <version>${engine.version}</version>
         </dependency>
         <dependency>
-            <groupId>org.bonitasoft.engine.test</groupId>
-            <artifactId>bonita-client-test-utils</artifactId>
-            <version>${engine.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.bonitasoft.engine.test</groupId>
-            <artifactId>bonita-common-test-utils</artifactId>
-            <version>${engine.version}</version>
+            <groupId>org.awaitility</groupId>
+            <artifactId>awaitility</artifactId>
+            <version>4.0.1</version>
         </dependency>
         <dependency>
             <groupId>junit</groupId>

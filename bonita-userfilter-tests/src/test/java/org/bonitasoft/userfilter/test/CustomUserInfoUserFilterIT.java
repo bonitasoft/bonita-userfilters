@@ -21,19 +21,14 @@ import org.bonitasoft.engine.identity.Group;
 import org.bonitasoft.engine.identity.Role;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.identity.UserMembership;
-import org.bonitasoft.engine.test.APITestUtil;
-import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.bonitasoft.userfilter.custom.user.info.CustomUserInfoUserFilter;
 import org.junit.After;
 import org.junit.Before;
-import org.junit.Rule;
 import org.junit.Test;
 
-public class CustomUserInfoUserFilterIT extends APITestUtil {
+public class CustomUserInfoUserFilterIT extends EngineTest {
 
 
-    @Rule
-    public BonitaEngineRule bonitaEngineRule = BonitaEngineRule.create();
 
     private static final String JAVA = "Java";
 

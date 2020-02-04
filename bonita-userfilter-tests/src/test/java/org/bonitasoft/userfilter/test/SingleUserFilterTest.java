@@ -26,7 +26,6 @@ import org.bonitasoft.engine.bpm.process.ProcessInstance;
 import org.bonitasoft.engine.bpm.process.impl.ProcessDefinitionBuilder;
 import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
-import org.bonitasoft.engine.test.APITestUtil;
 import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.junit.Assert;
 import org.junit.Rule;
@@ -35,7 +34,7 @@ import org.junit.Test;
 /**
  * @author Celine Souchet
  */
-public class SingleUserFilterTest extends APITestUtil {
+public class SingleUserFilterTest  extends EngineTest {
 
     @Rule
     public BonitaEngineRule bonitaEngineRule = BonitaEngineRule.create();
@@ -82,7 +81,7 @@ public class SingleUserFilterTest extends APITestUtil {
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final ActivityInstance task = waitForUserTaskAndGetIt(processInstance, activityName);
+        final ActivityInstance task = waitForUserTask(processInstance, activityName);
         Assert.assertEquals(grouillot.getId(), ((UserTaskInstance) task).getAssigneeId());
 
         disableAndDeleteProcess(definition);

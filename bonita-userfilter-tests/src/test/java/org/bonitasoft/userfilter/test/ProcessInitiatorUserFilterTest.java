@@ -25,7 +25,6 @@ import org.bonitasoft.engine.bpm.process.impl.ProcessDefinitionBuilder;
 import org.bonitasoft.engine.exception.BonitaException;
 import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
-import org.bonitasoft.engine.test.APITestUtil;
 import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.bonitasoft.userfilter.initiator.ProcessInitiatorUserFilter;
 import org.junit.After;
@@ -37,7 +36,7 @@ import org.junit.Test;
 /**
  * @author Matthieu Chaffotte
  */
-public class ProcessInitiatorUserFilterTest extends APITestUtil {
+public class ProcessInitiatorUserFilterTest extends EngineTest {
 
     private User matti;
     private User aleksi;
