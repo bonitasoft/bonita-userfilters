@@ -27,7 +27,6 @@ import org.bonitasoft.engine.exception.BonitaException;
 import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.identity.UserUpdater;
-import org.bonitasoft.engine.test.APITestUtil;
 import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.bonitasoft.userfilter.initiator.manager.ProcessinitiatorManagerUserFilter;
 import org.junit.After;
@@ -39,7 +38,7 @@ import org.junit.Test;
 /**
  * @author Aurelie Zara
  */
-public class ProcessinitiatorManagerUserFilterTest extends APITestUtil {
+public class ProcessinitiatorManagerUserFilterTest extends EngineTest {
 
     @Rule
     public BonitaEngineRule bonitaEngineRule = BonitaEngineRule.create();

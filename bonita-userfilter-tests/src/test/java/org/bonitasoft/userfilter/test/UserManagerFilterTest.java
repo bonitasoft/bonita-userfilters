@@ -25,7 +25,6 @@ import org.bonitasoft.engine.bpm.process.impl.ProcessDefinitionBuilder;
 import org.bonitasoft.engine.expression.ExpressionBuilder;
 import org.bonitasoft.engine.identity.User;
 import org.bonitasoft.engine.identity.UserCreator;
-import org.bonitasoft.engine.test.APITestUtil;
 import org.bonitasoft.engine.test.junit.BonitaEngineRule;
 import org.bonitasoft.userfilter.identity.UserManagerUserFilter;
 import org.junit.Assert;
@@ -35,8 +34,7 @@ import org.junit.Test;
 /**
  * @author Emmanuel Duchastenier
  */
-public class UserManagerFilterTest extends APITestUtil {
-
+public class UserManagerFilterTest extends EngineTest {
 
 
     @Rule
@@ -48,6 +46,7 @@ public class UserManagerFilterTest extends APITestUtil {
         final String chiefName = "chief";
         final String subordinateName = "grouillot";
         final String activityName = "step1";
+
 
         loginOnDefaultTenantWithDefaultTechnicalUser();
 
@@ -84,7 +83,7 @@ public class UserManagerFilterTest extends APITestUtil {
         logoutOnTenant();
         loginOnDefaultTenantWith(chiefName, "bpm");
 
-        final HumanTaskInstance task = waitForUserTaskAndGetIt(processInstance, activityName);
+        final HumanTaskInstance task = (HumanTaskInstance) waitForUserTask(processInstance, activityName);
         Assert.assertEquals(chief.getId(), task.getAssigneeId());
 
         disableAndDeleteProcess(definition);
