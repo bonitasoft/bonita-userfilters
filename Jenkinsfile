@@ -1,8 +1,13 @@
 #!/usr/bin/env groovy
 
+
+def getBranchName() {
+    env.BRANCH_NAME ? env.BRANCH_NAME : env.branch
+}
+
 def isBaseBranch() {
-    def currentBranch = env.BRANCH_NAME
-    currentBranch == 'master' || currentBranch == 'dev'
+    def currentBranch = branchName
+    currentBranch == 'master' || currentBranch == 'dev' || currentBranch?.startsWith('release-')
 }
 
 timestamps {
