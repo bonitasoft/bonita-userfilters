@@ -1,5 +1,8 @@
 # bonita-userfilters
 
+**WARNING**: This project is deprecated. See independent actor filter repositories instead(`bonitasoft/bonita-actorfilter-*`)
+
+
 This project provides the Bonita Actor Filters feature.
 
 An actor filter refines the list of users who can perform a task, by filtering the list of users mapped to the actor.
